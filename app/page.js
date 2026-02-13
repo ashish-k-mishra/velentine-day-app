@@ -146,7 +146,7 @@ export default function Home() {
       setShowMessage(false)
     }
   }, 3500)
-}
+} 
 
   const handleBack = () => {
     if (currentStage > 0) {

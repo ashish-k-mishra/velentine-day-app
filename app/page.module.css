@@ -354,3 +354,8 @@
 }
 
 
+
+.container[data-stage="gratitude"] {
+  background: linear-gradient(rgba(255, 215, 0, 0.7), rgba(255, 140, 0, 0.7)),
+    url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80') center/cover no-repeat fixed;
+}

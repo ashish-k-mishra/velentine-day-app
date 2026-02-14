@@ -288,8 +288,8 @@ export default function Home() {
         )}
         
         <h1 className={styles.giftHeading}>
-          <span className={styles.giftText}>Valentine Gift</span>
-          <span className={styles.giftTo}>to</span>
+          <span className={styles.giftText}>Hello</span>
+          {/* <span className={styles.giftTo}>to</span> */}
           <span className={styles.giftText}>My Valentine</span>
         </h1>
         

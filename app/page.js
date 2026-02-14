@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './page.module.css'
 
 const stages = [
@@ -146,10 +146,35 @@ export default function Home() {
   const [failedAttempts, setFailedAttempts] = useState(0)
   const [wrongMessageIndex, setWrongMessageIndex] = useState(0)
   const [showVideo, setShowVideo] = useState(false)
+  const [shuffledOptions, setShuffledOptions] = useState([])
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState(0)
+  const [showAdminPanel, setShowAdminPanel] = useState(false)
+  const [activeTab, setActiveTab] = useState('poem')
+
+  // Shuffle options when stage changes
+  useEffect(() => {
+    if (started && !showMessage && currentStage < stages.length) {
+      const stage = stages[currentStage]
+      const correctOption = stage.options[stage.correct]
+      
+      // Create a copy of options and shuffle
+      const optionsCopy = [...stage.options]
+      for (let i = optionsCopy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [optionsCopy[i], optionsCopy[j]] = [optionsCopy[j], optionsCopy[i]]
+      }
+      
+      // Find new index of correct answer
+      const newCorrectIndex = optionsCopy.findIndex(opt => opt.text === correctOption.text)
+      
+      setShuffledOptions(optionsCopy)
+      setCorrectAnswerIndex(newCorrectIndex)
+    }
+  }, [currentStage, started, showMessage])
 
  const handleAnswer = (selectedIndex) => {
-  const selected = stages[currentStage].options[selectedIndex]
-  const isCorrect = selectedIndex === stages[currentStage].correct
+  const selected = shuffledOptions[selectedIndex]
+  const isCorrect = selectedIndex === correctAnswerIndex
 
   if (isCorrect) {
     setMessage(`मैंने सोचा था कि आप यही कहोगे… 💖\n${selected.message}`)
@@ -195,14 +220,21 @@ export default function Home() {
     setFailedAttempts(0)
     setWrongMessageIndex(0)
     setShowVideo(false)
+    setShowAdminPanel(false)
+    setActiveTab('poem')
   }
 
   const handleNameSubmit = (e) => {
     e.preventDefault()
     const trimmedInput = nameInput.trim().toLowerCase()
     
+    // Check if answer is "ashish" (admin access)
+    if (trimmedInput === 'ashish' || trimmedInput === 'आशीष') {
+      setShowAdminPanel(true)
+      setShowWelcome(false)
+    }
     // Check if answer is "khargosh" in English or Hindi
-    if (trimmedInput === 'khargosh' || trimmedInput === 'खरगोश') {
+    else if (trimmedInput === 'khargosh' || trimmedInput === 'खरगोश') {
       setShowWelcome(false)
       setFailedAttempts(0)
     } else {
@@ -283,11 +315,132 @@ export default function Home() {
     )
   }
 
+  if (showAdminPanel) {
+    return (
+      <div className={styles.adminContainer}>
+        <div className={styles.adminHeader}>
+          <h1 className={styles.adminTitle}>💝 Special Content 💝</h1>
+          <button className={styles.homeButton} onClick={handleHome}>
+            🏠 होम
+          </button>
+        </div>
+        
+        <div className={styles.tabContainer}>
+          <button 
+            className={`${styles.tab} ${activeTab === 'poem' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('poem')}
+          >
+            📝 Poem
+          </button>
+          <button 
+            className={`${styles.tab} ${activeTab === 'photo' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('photo')}
+          >
+            📸 Photo
+          </button>
+          <button 
+            className={`${styles.tab} ${activeTab === 'songs' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('songs')}
+          >
+            🎵 Songs
+          </button>
+          <button 
+            className={`${styles.tab} ${activeTab === 'video' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('video')}
+          >
+            🎬 Video
+          </button>
+        </div>
+
+        <div className={styles.tabContent}>
+          {activeTab === 'poem' && (
+            <div className={styles.contentSection}>
+              <h2 className={styles.contentTitle}>आपके लिए कुछ शब्द </h2>
+              <div className={styles.poem}>
+                <p>आपकी मुस्कान में है मेरी दुनिया,</p>
+                <p>आपकी बातों में है मेरी खुशी।</p>
+                <p>आपके साथ हर पल है खास,</p>
+                <p>आपके बिना अधूरी है ये जिंदगी।</p>
+                <br/>
+                <p>आपकी आँखों में देखता हूँ सपने,</p>
+                <p>आपके साथ बनाता हूँ यादें।</p>
+                <p>हर दिन आपके साथ है वैलेंटाइन,</p>
+                <p>आप मेरी सबसे प्यारी कहानी हो।</p>
+                <br/>
+                <p>मैं आपसे प्रेम करता हूँ,</p>
+                <p>आज भी, कल भी, हमेशा... 💕</p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'photo' && (
+            <div className={styles.contentSection}>
+              <h2 className={styles.contentTitle}>📸 एक खूबसूरत लम्हा 📸</h2>
+              <img 
+                src="/special-photo.jpg" 
+                alt="Special Memory" 
+                className={styles.specialImage}
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                }}
+              />
+              <p className={styles.imageCaption}>
+                हर पल आपके साथ... हर याद आपकी... 🌹
+              </p>
+            </div>
+          )}
+
+          {activeTab === 'songs' && (
+            <div className={styles.contentSection}>
+              <h2 className={styles.contentTitle}>🎵 कुछ आपके लिए नग़मे 🎵</h2>
+              
+              <div className={styles.songItem}>
+                <h3 className={styles.songTitle}>🎤 जानम देख लो, मिट गई दूरियाँ</h3>
+                <audio controls className={styles.audioPlayer}>
+                  <source src="/song1.mp3" type="audio/mpeg" />
+                </audio>
+              </div>
+
+              <div className={styles.songItem}>
+                <h3 className={styles.songTitle}>💖 छूकर मेरे मन को</h3>
+                <audio controls className={styles.audioPlayer}>
+                  <source src="/song2.mp3" type="audio/mpeg" />
+                </audio>
+              </div>
+
+              <div className={styles.songItem}>
+                <h3 className={styles.songTitle}>🌹 चाँदी जैसा रंग है तेरा</h3>
+                <audio controls className={styles.audioPlayer}>
+                  <source src="/song3.mp3" type="audio/mpeg" />
+                </audio>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'video' && (
+            <div className={styles.contentSection}>
+              <h2 className={styles.contentTitle}>🎬 एक प्यारा-सा वीडियो 🎬</h2>
+              <video 
+                controls 
+                className={styles.videoPlayer}
+              >
+                <source src="/special-video.mp4" type="video/mp4" />
+              </video>
+              <p className={styles.videoNote}>
+                🎥 यह वीडियो सिर्फ आपके लिए है... ❤️
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   if (showPoem) {
     return (
       <div className={styles.poemContainer} data-stage="poem">
         <div className={styles.poemCard}>
-          <h1 className={styles.poemTitle}>आपके लिए ❤️</h1>
+          <h1 className={styles.poemTitle}>आपके लिए कुछ शब्द</h1>
          <div className={styles.poem}>
   <p>आपकी मुस्कान में है मेरी दुनिया,</p>
   <p>आपकी बातों में है मेरी खुशी।</p>
@@ -320,7 +473,7 @@ export default function Home() {
     return (
       <div className={styles.poemContainer} data-stage="song">
         <div className={styles.poemCard}>
-          <h1 className={styles.poemTitle}>🎵 आपके लिए गाने 🎵</h1>
+          <h1 className={styles.poemTitle}>🎵 कुछ आपके लिए नग़मे  🎵</h1>
           <div className={styles.songContainer}>
             <p className={styles.songMessage}>
               मैंने आपके लिए यह गाने चुने हैं...<br/>
@@ -438,7 +591,7 @@ export default function Home() {
     return (
       <div className={styles.poemContainer} data-stage="video">
         <div className={styles.poemCard}>
-          <h1 className={styles.poemTitle}>🎬 आपके लिए वीडियो 🎬</h1>
+          <h1 className={styles.poemTitle}>🎬 एक प्यारा-सा वीडियो 🎬</h1>
           <div className={styles.videoContainer}>
             <p className={styles.videoMessage}>
               यह वीडियो अपन दोनों के लिए खास 💕
@@ -569,7 +722,7 @@ export default function Home() {
           <>
             <h2 className={styles.question}>{stage.question}</h2>
             <div className={styles.options}>
-              {stage.options.map((option, index) => (
+              {shuffledOptions.map((option, index) => (
                 <button
                   key={index}
                   className={styles.option}

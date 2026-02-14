@@ -287,6 +287,12 @@ export default function Home() {
           </div>
         )}
         
+        <h1 className={styles.giftHeading}>
+          <span className={styles.giftText}>Valentine Gift</span>
+          <span className={styles.giftTo}>to</span>
+          <span className={styles.giftText}>My Valentine</span>
+        </h1>
+        
         <div className={styles.welcomeCard}>
           <h1 className={styles.welcomeTitle}>💖 स्वागत है 💖</h1>
           <p className={styles.welcomeQuestion}>

@@ -495,7 +495,7 @@ export default function Home() {
           <div className={styles.popup} onClick={(e) => e.stopPropagation()}>
             <h2 className={styles.popupTitle}>💭 हम्म...</h2>
             <p className={styles.popupMessage}>{wrongPopupMessage}</p>
-            <p className={styles.popupHint}>पर और सोचना पड़ेगा 😊</p>
+            <p className={styles.popupHint}>पर और सोचना पड़ेगा 😂</p>
             <button className={styles.popupButton} onClick={() => setShowWrongPopup(false)}>
               ठीक है ❤️
             </button>

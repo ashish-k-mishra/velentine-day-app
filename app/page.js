@@ -145,6 +145,7 @@ export default function Home() {
   const [showWrongNamePopup, setShowWrongNamePopup] = useState(false)
   const [failedAttempts, setFailedAttempts] = useState(0)
   const [wrongMessageIndex, setWrongMessageIndex] = useState(0)
+  const [showVideo, setShowVideo] = useState(false)
 
  const handleAnswer = (selectedIndex) => {
   const selected = stages[currentStage].options[selectedIndex]
@@ -193,6 +194,7 @@ export default function Home() {
     setNameInput("")
     setFailedAttempts(0)
     setWrongMessageIndex(0)
+    setShowVideo(false)
   }
 
   const handleNameSubmit = (e) => {
@@ -211,18 +213,21 @@ export default function Home() {
   }
 
   const handleSpecialButton = () => {
-    // Sequential order: poem -> image -> song -> image -> ...
-    const sequence = specialClickCount % 3
+    // Sequential order: image -> poem -> song -> video -> ...
+    const sequence = specialClickCount % 4
     
     if (sequence === 0) {
-        // First click: show poem
-        setShowPoem(true)
-    } else if (sequence === 1) {
-        // Second click: show image
+        // First click: show image
         setShowImage(true)
-    } else {
+    } else if (sequence === 1) {
+        // Second click: show poem
+        setShowPoem(true)
+    } else if (sequence === 2) {
       // Third click: show song
       setShowSong(true)
+    } else {
+      // Fourth click: show video
+      setShowVideo(true)
     }
     
     setSpecialClickCount(specialClickCount + 1)
@@ -232,6 +237,7 @@ export default function Home() {
     setShowPoem(false)
     setShowSong(false)
     setShowImage(false)
+    setShowVideo(false)
   }
 
   if (showWelcome) {
@@ -428,6 +434,57 @@ export default function Home() {
     )
   }
 
+  if (showVideo) {
+    return (
+      <div className={styles.poemContainer} data-stage="video">
+        <div className={styles.poemCard}>
+          <h1 className={styles.poemTitle}>🎬 आपके लिए वीडियो 🎬</h1>
+          <div className={styles.videoContainer}>
+            <p className={styles.videoMessage}>
+              यह वीडियो अपन दोनों के लिए खास 💕
+            </p>
+            <video 
+              controls 
+              className={styles.videoPlayer}
+              onError={(e) => {
+                e.target.style.display = 'none'
+                document.getElementById('videoInstructions').style.display = 'block'
+              }}
+            >
+              <source src="/special-video.mp4" type="video/mp4" />
+              आपका browser video element को support नहीं करता।
+            </video>
+            <div id="videoInstructions" style={{display: 'none', padding: '30px', background: '#f5f5f5', borderRadius: '15px', margin: '20px 0'}}>
+              <p style={{fontSize: '1.2em', color: '#666', marginBottom: '15px'}}>
+                🎬 अपना वीडियो यहाँ add करें:
+              </p>
+              <ol style={{textAlign: 'left', color: '#666', lineHeight: '2'}}>
+                <li>अपना video file download करें</li>
+                <li>इसे <code>special-video.mp4</code> नाम से save करें</li>
+                <li>इसे <code>public</code> folder में रखें</li>
+                <li>Application restart करें</li>
+              </ol>
+              <p style={{fontSize: '0.9em', color: '#999', marginTop: '15px', fontStyle: 'italic'}}>
+                💡 Tip: MP4 format सबसे अच्छा काम करता है
+              </p>
+            </div>
+            <p className={styles.videoNote}>
+              🎥 यह वीडियो सिर्फ आपके लिए है... ❤️
+            </p>
+          </div>
+          <div className={styles.navigationButtons}>
+            <button className={styles.backButton} onClick={handleBackFromSpecial}>
+              ← पीछे जाएं
+            </button>
+            <button className={styles.homeButton} onClick={handleHome}>
+              🏠 होम
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (showGratitude) {
     return (
       <div className={styles.container} data-stage="gratitude">
@@ -525,7 +582,7 @@ export default function Home() {
             <div className={styles.navigationButtons}>
               {currentStage > 0 && (
                 <button className={styles.backButton} onClick={handleBack}>
-                  ← पीछे जाएं
+                  ← पीछे जाओ
                 </button>
               )}
               <button className={styles.homeButton} onClick={handleHome}>

@@ -44,6 +44,25 @@
 
 5. **Restart the application**
 
+### For Video:
+1. **Download from Google Drive:**
+   - Open your Google Drive link
+   - Click on the download button (⬇️)
+   - Save the video file
+
+2. **Convert to MP4 (if needed):**
+   - If file is not MP4, convert it using online converter
+   - Recommended: https://cloudconvert.com/
+
+3. **Rename the file:**
+   - Rename it to exactly `special-video.mp4`
+
+4. **Copy to public folder:**
+   - Copy the file to this `public` folder
+   - Path should be: `public/special-video.mp4`
+
+5. **Restart the application**
+
 ## Why Google Drive Links Don't Work Directly?
 - Google Drive links are for viewing/downloading, not for direct embedding
 - You need to download the files and host them locally
@@ -58,6 +77,7 @@
 ## File Paths Used in Code:
 - Image: `/special-photo.jpg`
 - Songs: `/song1.mp3`, `/song2.mp3`, `/song3.mp3`
+- Video: `/special-video.mp4`
 
 ## After Adding Files:
 Restart your development server:

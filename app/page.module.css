@@ -588,3 +588,39 @@
     padding: 15px;
   }
 }
+
+/* Video Container Styles */
+.videoContainer {
+  text-align: center;
+  padding: 20px;
+}
+
+.videoMessage {
+  font-size: 1.3em;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.videoPlayer {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  display: block;
+  background: #000;
+}
+
+.videoNote {
+  font-size: 1.2em;
+  color: #e91e63;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* Background for video page */
+.poemContainer[data-stage="video"] {
+  background: linear-gradient(rgba(103, 58, 183, 0.7), rgba(63, 81, 181, 0.7)),
+    url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1920&q=80') center/cover no-repeat;
+}

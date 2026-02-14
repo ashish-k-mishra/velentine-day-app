@@ -213,15 +213,15 @@ export default function Home() {
   }
 
   const handleSpecialButton = () => {
-    // Sequential order: image -> poem -> song -> video -> ...
+    // Sequential order: poem -> image -> song -> video -> ...
     const sequence = specialClickCount % 4
     
     if (sequence === 0) {
-        // First click: show image
-        setShowImage(true)
-    } else if (sequence === 1) {
-        // Second click: show poem
+        // First click: show poem
         setShowPoem(true)
+    } else if (sequence === 1) {
+        // Second click: show image
+        setShowImage(true)
     } else if (sequence === 2) {
       // Third click: show song
       setShowSong(true)
@@ -378,7 +378,7 @@ export default function Home() {
           </div>
           <div className={styles.navigationButtons}>
             <button className={styles.backButton} onClick={handleBackFromSpecial}>
-              ← पीछे जाएं
+              ← पीछे जाओ
             </button>
             <button className={styles.homeButton} onClick={handleHome}>
               🏠 होम
@@ -423,7 +423,7 @@ export default function Home() {
           </div>
           <div className={styles.navigationButtons}>
             <button className={styles.backButton} onClick={handleBackFromSpecial}>
-              ← पीछे जाएं
+              ← पीछे जाओ
             </button>
             <button className={styles.homeButton} onClick={handleHome}>
               🏠 होम
@@ -474,7 +474,7 @@ export default function Home() {
           </div>
           <div className={styles.navigationButtons}>
             <button className={styles.backButton} onClick={handleBackFromSpecial}>
-              ← पीछे जाएं
+              ← पीछे जाओ
             </button>
             <button className={styles.homeButton} onClick={handleHome}>
               🏠 होम
@@ -503,7 +503,7 @@ export default function Home() {
           <div className={styles.hearts}>🙏 💕 ✨ 💖 🌟</div>
           <div className={styles.navigationButtons}>
             <button className={styles.backButton} onClick={() => setShowGratitude(false)}>
-              ← पीछे जाएं
+              ← पीछे जाओ
             </button>
             <button className={styles.homeButton} onClick={handleHome}>
               🏠 होम
@@ -602,7 +602,7 @@ export default function Home() {
             {isLastStage && (
               <div className={styles.navigationButtons}>
                 <button className={styles.backButton} onClick={handleBack}>
-                  ← पीछे जाएं
+                  ← पीछे जाओ
                 </button>
                 <button className={styles.homeButton} onClick={handleHome}>
                   🏠 होम
